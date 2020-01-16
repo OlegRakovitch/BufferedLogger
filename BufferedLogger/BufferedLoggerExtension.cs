@@ -1,6 +1,7 @@
 using Microsoft.Azure.WebJobs.Description;
 using Microsoft.Azure.WebJobs.Host.Config;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace BufferedLogger
 {
@@ -9,10 +10,10 @@ namespace BufferedLogger
     {
         readonly QueueProcessor queue;
         readonly ILoggerFactory loggerFactory;
-        public BufferedLoggerExtension(ILoggerFactory factory)
+        public BufferedLoggerExtension(IEnumerable<ILoggerProvider> providers)
         {
             queue = new QueueProcessor();
-            loggerFactory = factory;
+            loggerFactory = new LoggerFactory(providers);
         }
 
         public void Initialize(ExtensionConfigContext context)
